@@ -27,6 +27,7 @@ builder.Services.AddSingleton<CacheManagerService>();
 //------------------------------------------------------
 
 builder.Services.ConfigureCorsDev();
+//builder.Services.ConfigureCorsProd();
 builder.Services.ConfigureLogger(builder.Configuration);
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(Log.Logger);
@@ -65,7 +66,7 @@ app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.MapControllers();
 
-// app.Run("http://0.0.0.0:431");
 app.Run();
 
+// User for Integration Testing project
 public partial class Program { }

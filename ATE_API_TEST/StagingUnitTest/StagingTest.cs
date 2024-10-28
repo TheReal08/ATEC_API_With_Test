@@ -43,7 +43,7 @@ namespace ATEC_API_Test.StagingUnitTest
                   
             var mockLogger = new Mock<ILogger<StagingController>>();
 
-            var StagingController = new StagingController(_stagingMock.Object , mockLogger.Object);
+            var StagingController = new StagingController(_stagingMock.Object , mockLogger.Object , null);
 
             var response = await StagingController.IsLotTrackOut(lotAlias);
 

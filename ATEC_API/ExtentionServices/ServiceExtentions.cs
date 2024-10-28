@@ -1,3 +1,6 @@
+// <copyright file="ServiceExtentions.cs" company="ATEC">
+// Copyright (c) ATEC. All rights reserved.
+// </copyright>
 
 namespace ATEC_API.ExtentionServices
 {
@@ -18,9 +21,11 @@ namespace ATEC_API.ExtentionServices
                                 policy =>
                                 {
                                     policy.WithOrigins(
-                                        "http://192.168.5.9:400/",
+                                        "http://192.168.5.9:400",
                                         "http://prod.atecmes.com:400",
-                                        "http://192.168.1.65:500/")
+                                        "http://192.168.1.65:500",
+                                        "http://192.168.1.65:80",
+                                        "http://192.168.1.65")
                                           .AllowAnyHeader()
                                           .AllowAnyMethod()
                                           .AllowCredentials();
