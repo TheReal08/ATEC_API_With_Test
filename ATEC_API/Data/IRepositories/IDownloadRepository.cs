@@ -2,13 +2,13 @@
 // Copyright (c) ATEC. All rights reserved.
 // </copyright>
 
-using ATEC_API.Data.DTO.DownloadCompressDTO;
-using Microsoft.AspNetCore.Mvc;
-
 namespace ATEC_API.Data.IRepositories
 {
+    using ATEC_API.Data.DTO.DownloadCompressDTO;
+    using Dapper;
+
     public interface IDownloadRepository
     {
-        Task<MemoryStream> DownloadToExcelAndCompress<T>(DownloadCompressDTO downloadCompressDTO);
+        Task<MemoryStream> DownloadToExcelAndCompress<T>(DownloadCompressDTO downloadCompressDTO,DynamicParameters dynamicParameters);
     }
 }

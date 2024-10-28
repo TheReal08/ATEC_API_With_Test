@@ -19,7 +19,7 @@ namespace ATEC_API.Data.Repositories
         private readonly IDapperConnection _dapperConnection;
         private readonly DapperModelPagination _dapperModelPagination;
 
-        public StagingRepository(IDapperConnection dapperConnection , DapperModelPagination dapperModelPagination)
+        public StagingRepository(IDapperConnection dapperConnection, DapperModelPagination dapperModelPagination)
         {
             this._dapperConnection = dapperConnection;
             this._dapperModelPagination = dapperModelPagination;

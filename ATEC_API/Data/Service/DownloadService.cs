@@ -4,6 +4,7 @@
 
 namespace ATEC_API.Data.Service
 {
+    using System.Data;
     using System.IO.Compression;
     using ATEC_API.Data.DTO.DownloadCompressDTO;
     using ATEC_API.Data.IRepositories;
@@ -23,7 +24,7 @@ namespace ATEC_API.Data.Service
             ExcelPackage.LicenseContext = OfficeOpenXml.LicenseContext.NonCommercial;
     }
 
-    public async Task<MemoryStream> DownloadToExcelAndCompress<Imodel>(DownloadCompressDTO downloadCompressDTO)
+    public async Task<MemoryStream> DownloadToExcelAndCompress<Imodel>(DownloadCompressDTO downloadCompressDTO ,DynamicParameters dynamicParameters)
     {
         using (SqlConnection sqlConnection = this._dapperConnection.MES_ATEC_CreateConnection())
         {
@@ -33,7 +34,7 @@ namespace ATEC_API.Data.Service
             var cacheValue = await this._cacheManagerService.GetListAsync<Imodel>(useSP);
             if (cacheValue == null)
             {
-                SPList = await sqlConnection.QueryAsync<Imodel>(useSP);
+                SPList = await sqlConnection.QueryAsync<Imodel>(useSP, dynamicParameters, commandType: CommandType.StoredProcedure);
                 await this._cacheManagerService.SetListAsync<Imodel>(useSP, SPList.ToList());
             }
 
@@ -59,8 +60,8 @@ namespace ATEC_API.Data.Service
                     // Since Excel is 1-indexed, we start with 1
                     worksheet.Cells[1, col + 1].Value = properties[col].Name;
 
-                    // Check if the property is of type DateTime and apply formatting
-                    if (properties[col].PropertyType == typeof(DateTime))
+                    // Check if the property is of type DateTime or Nullable<DateTime> and apply formatting
+                    if (properties[col].PropertyType == typeof(DateTime) || properties[col].PropertyType == typeof(DateTime?))
                     {
                         worksheet.Column(col + 1).Style.Numberformat.Format = "yyyy-mm-dd";
                     }
@@ -80,7 +81,17 @@ namespace ATEC_API.Data.Service
                 {
                     for (int col = 0; col < properties.Length; col++)
                     {
-                        worksheet.Cells[row, col + 1].Value = properties[col].GetValue(list);
+                        var cellValue = properties[col].GetValue(list);
+
+                        if (cellValue is DateTime dateValue)
+                        {
+                             worksheet.Cells[row, col + 1].Value = cellValue;
+                             worksheet.Cells[row, col + 1].Style.Numberformat.Format = "yyyy-mm-dd";
+                        }
+                        else
+                        {
+                            worksheet.Cells[row, col + 1].Value = cellValue;
+                        }
                     }
 
                     row++;

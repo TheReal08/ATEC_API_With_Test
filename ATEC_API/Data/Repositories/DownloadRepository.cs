@@ -7,6 +7,7 @@ namespace ATEC_API.Data.Repositories
     using ATEC_API.Data.DTO.DownloadCompressDTO;
     using ATEC_API.Data.IRepositories;
     using ATEC_API.Data.Service;
+    using Dapper;
     using Microsoft.AspNetCore.Mvc;
 
     public class DownloadRepository : IDownloadRepository
@@ -18,9 +19,9 @@ namespace ATEC_API.Data.Repositories
             this._downloadService = downloadService;
         }
 
-        public async Task<MemoryStream> DownloadToExcelAndCompress<T>(DownloadCompressDTO downloadCompressDTO)
+        public async Task<MemoryStream> DownloadToExcelAndCompress<T>(DownloadCompressDTO downloadCompressDTO, DynamicParameters dynamicParameters)
         {
-            var compressedExcelStream = await this._downloadService.DownloadToExcelAndCompress<T>(downloadCompressDTO);
+            var compressedExcelStream = await this._downloadService.DownloadToExcelAndCompress<T>(downloadCompressDTO , dynamicParameters);
 
             compressedExcelStream.Seek(0, SeekOrigin.Begin);
 

@@ -4,12 +4,14 @@
 
 namespace ATEC_API.Controllers
 {
+    using System.Data;
     using System.Text.Json;
     using ATEC_API.Data.DTO.DownloadCompressDTO;
     using ATEC_API.Data.DTO.StagingDTO;
     using ATEC_API.Data.IRepositories;
     using ATEC_API.Data.StoredProcedures;
     using ATEC_API.GeneralModels;
+    using Dapper;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
@@ -196,7 +198,10 @@ namespace ATEC_API.Controllers
 
         [HttpGet("DownloadHistoryList")]
         [AllowAnonymous]
-        public async Task<IActionResult> DownloadHistoryList([FromQuery] string zipName, [FromQuery] string sheetName)
+        public async Task<IActionResult> DownloadHistoryList(
+            [FromQuery] string zipName,
+            [FromQuery] string sheetName,
+            [FromQuery] MagazineHistoryInput magazineHistoryInput)
         {
             this._logger.LogInformation("DownloadHistoryList method is invoking");
 
@@ -208,7 +213,14 @@ namespace ATEC_API.Controllers
                 CacheKey = StagingSP.usp_Magazine_History_Search_Download_API,
             };
 
-            var blob = await this._downloadRepository.DownloadToExcelAndCompress<MagazineHistoryDTO>(downloadParams);
+            var parametersSP = new DynamicParameters();
+            parametersSP.Add("@SearchData", magazineHistoryInput.searchValue, DbType.String);
+            parametersSP.Add("@StageValue", magazineHistoryInput.stageValue, DbType.Int32);
+            parametersSP.Add("@CustomerCode", magazineHistoryInput.customerCode, DbType.Int32);
+            parametersSP.Add("@DateFrom", magazineHistoryInput.dateFrom, DbType.DateTime);
+            parametersSP.Add("@DateTo", magazineHistoryInput.dateTo, DbType.DateTime);
+
+            var blob = await this._downloadRepository.DownloadToExcelAndCompress<MagazineHistoryDTO>(downloadParams, parametersSP);
 
             this._logger.LogInformation($"Details {JsonSerializer.Serialize(downloadParams)}");
 
