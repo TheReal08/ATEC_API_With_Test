@@ -144,15 +144,19 @@ namespace ATEC_API.Data.Repositories
         {
             var parameters = new DynamicParameters();
             parameters.Add("@SearchData", magazineHistoryInput.searchValue, DbType.String);
-            parameters.Add("@@StageValue", magazineHistoryInput.stageValue, DbType.Int32);
-            parameters.Add("@PageSize", magazineHistoryInput.pageSize, DbType.Int32);
+            parameters.Add("@StageValue", magazineHistoryInput.stageValue, DbType.Int32);
+            parameters.Add("@CustomerCode", magazineHistoryInput.customerCode, DbType.Int32);
+            parameters.Add("@DateFrom", magazineHistoryInput.dateFrom, DbType.DateTime);
+            parameters.Add("@DateTo", magazineHistoryInput.dateTo, DbType.DateTime);
             parameters.Add("@CurrentPage", magazineHistoryInput.currentPage, DbType.Int32);
+            parameters.Add("@PageSize", magazineHistoryInput.pageSize, DbType.Int32);
 
             var magazineDetailList = Enumerable.Empty<MagazineHistoryDTO>();
             var pageResult = new PageResultsResponse();
 
-            (magazineDetailList, pageResult) = await _dapperModelPagination
-                                                             .GetDetailsAndPagingInfoAsync<MagazineHistoryDTO>(StagingSP.usp_Magazine_History_Search_API, parameters);
+            (magazineDetailList, pageResult) = await this._dapperModelPagination
+                                                              .GetDetailsAndPagingInfoAsync<MagazineHistoryDTO>(StagingSP.usp_Magazine_History_Search_API,
+                                                                                                                parameters);
 
             return (magazineDetailList, pageResult);
         }

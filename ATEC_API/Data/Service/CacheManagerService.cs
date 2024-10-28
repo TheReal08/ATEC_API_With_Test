@@ -47,6 +47,26 @@ namespace ATEC_API.Data.Service
             return null;
         }
 
+
+        public async Task SetListAsync<T>(string key, List<T> value)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            var cacheEntryOptions = new MemoryCacheEntryOptions()
+                           .SetPriority(CacheItemPriority.NeverRemove)
+                           .SetAbsoluteExpiration(TimeSpan.FromMinutes(10));
+
+            await Task.Run(() => this._cache.Set(key, value, cacheEntryOptions));
+        }
+
         public async Task SetAsync<T>(string key, T value)
         {
             if (string.IsNullOrWhiteSpace(key))

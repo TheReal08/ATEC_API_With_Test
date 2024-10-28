@@ -12,6 +12,9 @@ namespace ATEC_API.Data.StoredProcedures
         private const string usp_M_H_S_API = "usp_Magazine_History_Search_API";
         public static string usp_Magazine_History_Search_API = usp_M_H_S_API;
 
+        private const string usp_M_H_S_D_API = "usp_Magazine_History_Search_Download_API";
+        public static string usp_Magazine_History_Search_Download_API = usp_M_H_S_D_API;
+
         // For test purposes
         public static string usp_Staging_IsTrackOut_Test = "usp_Staging_IsTrackOut_Test";
         public static string usp_Material_Details = "usp_MTL_Material_Details";

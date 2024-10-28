@@ -10,6 +10,12 @@ namespace ATEC_API.Data.DTO.StagingDTO
 
         public int stageValue { get; set; }
 
+        public int customerCode { get; set; }
+
+        public DateTime? dateFrom { get; set; }
+
+        public DateTime? dateTo { get; set; }
+
         public int currentPage { get; set; }
 
         public int pageSize { get; set; }

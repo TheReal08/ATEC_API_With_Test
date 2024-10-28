@@ -33,5 +33,7 @@ namespace ATEC_API.Data.DTO.StagingDTO
         public string Color { get; set; }
 
         public string MachineId { get; set; }
+
+        public string CustomerID { get; set; }
     }
 }

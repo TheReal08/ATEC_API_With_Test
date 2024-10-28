@@ -5,8 +5,10 @@
 namespace ATEC_API.Controllers
 {
     using System.Text.Json;
+    using ATEC_API.Data.DTO.DownloadCompressDTO;
     using ATEC_API.Data.DTO.StagingDTO;
     using ATEC_API.Data.IRepositories;
+    using ATEC_API.Data.StoredProcedures;
     using ATEC_API.GeneralModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
@@ -18,11 +20,14 @@ namespace ATEC_API.Controllers
     {
         private readonly IStagingRepository _stagingRepository;
         private readonly ILogger<StagingController> _logger;
+        private readonly IDownloadRepository _downloadRepository;
 
         public StagingController(IStagingRepository stagingRepository,
-                                 ILogger<StagingController> logger)
+                                 ILogger<StagingController> logger,
+                                 IDownloadRepository downloadRepository)
         {
             this._logger = logger;
+            this._downloadRepository = downloadRepository;
             this._stagingRepository = stagingRepository;
         }
 
@@ -186,6 +191,28 @@ namespace ATEC_API.Controllers
                 Details = magazineDetailList,
                 Response = pageResult,
             });
+        }
+
+
+        [HttpGet("DownloadHistoryList")]
+        [AllowAnonymous]
+        public async Task<IActionResult> DownloadHistoryList([FromQuery] string zipName, [FromQuery] string sheetName)
+        {
+            this._logger.LogInformation("DownloadHistoryList method is invoking");
+
+            var downloadParams = new DownloadCompressDTO
+            {
+                ZipName = zipName,
+                SheetName = sheetName,
+                SP = StagingSP.usp_Magazine_History_Search_Download_API,
+                CacheKey = StagingSP.usp_Magazine_History_Search_Download_API,
+            };
+
+            var blob = await this._downloadRepository.DownloadToExcelAndCompress<MagazineHistoryDTO>(downloadParams);
+
+            this._logger.LogInformation($"Details {JsonSerializer.Serialize(downloadParams)}");
+
+            return this.File(blob, "application/zip", downloadParams.ZipName);
         }
     }
 }

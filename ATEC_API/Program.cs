@@ -1,3 +1,7 @@
+// <copyright file="Program.cs" company="ATEC">
+// Copyright (c) ATEC. All rights reserved.
+// </copyright>
+
 using ATEC_API.Context;
 using ATEC_API.Data.IRepositories;
 using ATEC_API.Data.Repositories;
@@ -10,12 +14,16 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 //------------------Service Registration----------------
+builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IHRISRepository, HRISRepository>();
 builder.Services.AddScoped<IDapperConnection, DapperConnection>();
 builder.Services.AddScoped<IStagingRepository, StagingRepository>();
 builder.Services.AddScoped<ICantierRepository, CantierRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IDownloadRepository, DownloadRepository>();
 builder.Services.AddScoped<DapperModelPagination>();
+builder.Services.AddScoped<DownloadService>();
+builder.Services.AddSingleton<CacheManagerService>();
 //------------------------------------------------------
 
 builder.Services.ConfigureCorsDev();
