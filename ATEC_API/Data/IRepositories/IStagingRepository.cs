@@ -21,5 +21,12 @@ namespace ATEC_API.Data.IRepositories
 
         Task<(IEnumerable<MagazineHistoryDTO>, PageResultsResponse pageResultsResponse)> MagazineListDapperPagination(MagazineHistoryInput magazineHistoryInput);
 
+        //New Material Staging Flow
+        Task<IEnumerable<MaterialStagingResponse>>? GetMaterialDetailNew(MaterialStagingNewDTO materialStagingNewDTO);
+
+        Task<IEnumerable<MaterialStagingResponse>>? GetMaterialLotMachine(MaterialStagingLMDTO materialStagingLMDTO);
+
+        //Material Staging Panjit and Gem
+        Task<IEnumerable<MaterialStagingResponse>>? GetMaterialDetailPG(MaterialStagingNewDTO materialStagingNewDTO);
     }
 }
