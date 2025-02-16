@@ -21,6 +21,7 @@ builder.Services.AddScoped<IStagingRepository, StagingRepository>();
 builder.Services.AddScoped<ICantierRepository, CantierRepository>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IDownloadRepository, DownloadRepository>();
+builder.Services.AddScoped<ILogSheetRepository, LogSheetRepository>();
 builder.Services.AddScoped<DapperModelPagination>();
 builder.Services.AddScoped<DownloadService>();
 builder.Services.AddSingleton<CacheManagerService>();
@@ -65,7 +66,6 @@ app.MapHealthChecks("health");
 app.UseCors("CorsPolicy");
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
 
 // User for Integration Testing project

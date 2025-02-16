@@ -34,7 +34,7 @@ namespace ATEC_API.Data.Repositories
                                                                         new
                                                                         {
                                                                             MaterialType = materialStaging.MaterialType,
-                                                                            Mode = materialStaging.Mode
+                                                                            Mode = materialStaging.Mode,
                                                                         },
                                                                         commandType: CommandType.StoredProcedure
                                                                         );
@@ -53,7 +53,7 @@ namespace ATEC_API.Data.Repositories
                                                                             CustomerCode = materialHistory.CustomerCode,
                                                                             DateFrom = materialHistory.DateFrom,
                                                                             DateTo = materialHistory.DateTo,
-                                                                            Mode = materialHistory.Mode
+                                                                            Mode = materialHistory.Mode,
                                                                         },
                                                                         commandType: CommandType.StoredProcedure
                                                                         );
@@ -91,7 +91,7 @@ namespace ATEC_API.Data.Repositories
                                                                                 ExpirationDate = materialStagingDTO.ExpirationDate,
                                                                                 CustomerCode = materialStagingDTO.CustomerCode,
                                                                                 MaterialType = materialStagingDTO.MaterialType,
-                                                                                Usercode = materialStagingDTO.Usercode
+                                                                                Usercode = materialStagingDTO.Usercode,
                                                                             },
                                                                             commandType: CommandType.StoredProcedure
                                                                             );
@@ -133,13 +133,11 @@ namespace ATEC_API.Data.Repositories
                                                                         Mode = materialStaging.Mode,
                                                                         SID = materialStaging.SID,
                                                                         MaterialId = materialStaging.MaterialId,
-                                                                        Serial = materialStaging.Serial
+                                                                        Serial = materialStaging.Serial,
                                                                     },
-                                                                    commandType: CommandType.StoredProcedure
-                                                                    );
+                                                                    commandType: CommandType.StoredProcedure);
             return LotExist;
         }
-
 
         public async Task<IEnumerable<MaterialStagingResponse>>? GetMaterialDetailNew(MaterialStagingNewDTO materialStagingNewDTO)
         {
@@ -154,10 +152,9 @@ namespace ATEC_API.Data.Repositories
                     Serial = materialStagingNewDTO.Serial,
                     ExpirationDate = materialStagingNewDTO.ExpirationDate,
                     MaterialType = materialStagingNewDTO.MaterialType,
-                    Usercode = materialStagingNewDTO.Usercode
+                    Usercode = materialStagingNewDTO.Usercode,
                 },
-                commandType: CommandType.StoredProcedure
-                );
+                commandType: CommandType.StoredProcedure);
             return MaterialDetails;
         }
 
@@ -174,10 +171,9 @@ namespace ATEC_API.Data.Repositories
                     Mode = materialStagingLMDTO.Mode,
                     SID = materialStagingLMDTO.Sid,
                     MaterialId = materialStagingLMDTO.MaterialId,
-                    Serial = materialStagingLMDTO.Serial
+                    Serial = materialStagingLMDTO.Serial,
                 },
-                commandType: CommandType.StoredProcedure
-                );
+                commandType: CommandType.StoredProcedure);
             return LMDetails;
         }
 
@@ -194,13 +190,11 @@ namespace ATEC_API.Data.Repositories
                     Serial = materialStagingNewDTO.Serial,
                     ExpirationDate = materialStagingNewDTO.ExpirationDate,
                     MaterialType = materialStagingNewDTO.MaterialType,
-                    Usercode = materialStagingNewDTO.Usercode
+                    Usercode = materialStagingNewDTO.Usercode,
                 },
-                commandType: CommandType.StoredProcedure
-                );
+                commandType: CommandType.StoredProcedure);
             return MaterialDetails;
         }
-
 
         public async Task<(IEnumerable<MagazineHistoryDTO>, PageResultsResponse pageResultsResponse)> MagazineListDapperPagination(MagazineHistoryInput magazineHistoryInput)
         {

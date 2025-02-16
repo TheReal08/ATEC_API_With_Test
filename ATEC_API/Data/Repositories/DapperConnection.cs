@@ -27,5 +27,11 @@ namespace ATEC_API.Data.Repositories
             return new SqlConnection(
                            _configuration.GetConnectionString("MESATEC_Connection"));
         }
+
+        public SqlConnection LogSheet_CreateConnection()
+        {
+            return new SqlConnection(
+                           _configuration.GetConnectionString("LogSheet_Connection"));
+        }
     }
 }

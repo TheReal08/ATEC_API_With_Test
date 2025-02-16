@@ -12,5 +12,6 @@ namespace ATEC_API.Data.IRepositories
 
         SqlConnection ATEC_CentralAccess_CreateConnection();
 
+        SqlConnection LogSheet_CreateConnection();
     }
 }
