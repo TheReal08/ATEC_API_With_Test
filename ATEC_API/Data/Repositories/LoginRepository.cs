@@ -39,7 +39,7 @@ namespace ATEC_API.Data.Repositories
                return emptyLoginResponse;
             }
 
-            var userDetail = userDetails.SingleOrDefault(details => details.ApplicationID == "Staging");
+            var userDetail = userDetails.SingleOrDefault(details => details.ApplicationID == "Logsheet");
 
             if (userDetail == null)
             {

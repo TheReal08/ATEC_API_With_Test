@@ -9,5 +9,7 @@ namespace ATEC_API.Data.IRepositories
     public interface ILogSheetRepository
     {
         Task<IEnumerable<LogSheetFieldsDTO>> GetLogSheetFields(LogSheetFieldsDTO input);
+
+        Task<IEnumerable<LogSheetFieldsDTO>> GetLogSheetName();
     }
 }

@@ -7,4 +7,6 @@ namespace ATEC_API.Data.StoredProcedures;
 public class LogSheetSP
 {
     public static string SP_GetLogsheetFields = "SP_GetLogsheetFields";
+
+    public static string SP_GetLogsheetsName = "SP_GetLogsheetsName";
 }

@@ -30,5 +30,16 @@ namespace ATEC_API.Controllers
                 Details = getlogSheetDetials,
             });
         }
+
+        [HttpGet("GetLogsheetName")]
+        public async Task<IActionResult> GetLogsheetName()
+        {
+            var getlogSheetDetials = await _logSheetRepository.GetLogSheetName();
+
+            return this.Ok(new GeneralResponse
+            {
+                Details = getlogSheetDetials,
+            });
+        }
     }
 }

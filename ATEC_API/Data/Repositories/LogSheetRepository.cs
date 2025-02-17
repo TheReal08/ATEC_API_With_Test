@@ -30,5 +30,17 @@ namespace ATEC_API.Data.Repositories
 
             return fieldDetails;
         }
+
+        public async Task<IEnumerable<LogSheetFieldsDTO>> GetLogSheetName()
+        {
+            await using SqlConnection sqlConnection = _dapperConnection.LogSheet_CreateConnection();
+
+            var fieldDetails = await sqlConnection.QueryAsync<LogSheetFieldsDTO>(
+                                                                   LogSheetSP.SP_GetLogsheetsName,
+                                                                   commandType: CommandType.StoredProcedure
+                                                                   );
+
+            return fieldDetails;
+        }
     }
 }
