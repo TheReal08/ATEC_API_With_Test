@@ -1,19 +1,17 @@
-// <copyright file="Program.cs" company="ATEC">
-// Copyright (c) ATEC. All rights reserved.
-// </copyright>
-
 using ATEC_API.Context;
+using ATEC_API.Data.Context;
 using ATEC_API.Data.IRepositories;
 using ATEC_API.Data.Repositories;
 using ATEC_API.Data.Service;
 using ATEC_API.ExtentionServices;
 using ATEC_API.Filters;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//------------------Service Registration----------------
+// Add services to the container.
 builder.Services.AddMemoryCache();
 builder.Services.AddScoped<IHRISRepository, HRISRepository>();
 builder.Services.AddScoped<IDapperConnection, DapperConnection>();
@@ -25,10 +23,8 @@ builder.Services.AddScoped<ILogSheetRepository, LogSheetRepository>();
 builder.Services.AddScoped<DapperModelPagination>();
 builder.Services.AddScoped<DownloadService>();
 builder.Services.AddSingleton<CacheManagerService>();
-//------------------------------------------------------
 
 builder.Services.ConfigureCorsDev();
-//builder.Services.ConfigureCorsProd();
 builder.Services.ConfigureLogger(builder.Configuration);
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(Log.Logger);
@@ -37,36 +33,41 @@ builder.Services.ConfigureHealthCheck();
 
 builder.Services.AddControllers(options =>
 {
-    options.Filters.Add(typeof(ValidateModelAttribute));
+options.Filters.Add(typeof(ValidateModelAttribute));
 });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//----------------------Auth Config----------------------
-builder.Services.AddAuthentication();
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+options.User.RequireUniqueEmail = false;
+options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+})
+.AddDefaultTokenProviders()
+.AddEntityFrameworkStores<UserContext>();
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
-                .AddEntityFrameworkStores<UserContext>();
-//-------------------------------------------------------
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = "BasicAuthentication";
+    options.DefaultChallengeScheme = "BasicAuthentication";
+}).AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 }
 
-app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
+app.UseAuthentication(); // Ensure this line is present
+app.UseAuthorization();  // Ensure this line is present
+
 app.MapHealthChecks("health");
 app.UseCors("CorsPolicy");
-app.UseAuthorization();
 app.MapControllers();
 app.Run();
 
-// User for Integration Testing project
 public partial class Program { }
