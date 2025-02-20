@@ -24,7 +24,7 @@ builder.Services.AddScoped<DapperModelPagination>();
 builder.Services.AddScoped<DownloadService>();
 builder.Services.AddSingleton<CacheManagerService>();
 
-builder.Services.ConfigureCorsDev();
+builder.Services.ConfigureCorsProd();
 builder.Services.ConfigureLogger(builder.Configuration);
 builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(Log.Logger);
